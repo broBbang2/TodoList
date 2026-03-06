@@ -24,9 +24,6 @@ export default function RootLayout({
               TaskFlow
             </Link>
             <nav className="flex items-center gap-4 text-xs font-medium text-slate-600">
-              <Link href="/" className="hover:text-slate-900">
-                소개
-              </Link>
               <Link href="/dashboard" className="hover:text-slate-900">
                 대시보드
               </Link>

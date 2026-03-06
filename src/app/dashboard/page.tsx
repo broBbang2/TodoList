@@ -1,9 +1,12 @@
 "use client";
+
+import { useEffect, useMemo, useState } from "react";
 import TodoFilter from "@/components/todo/TodoFilter";
 import TodoForm from "@/components/todo/TodoForm";
 import TodoList from "@/components/todo/TodoList";
 import TodoStats from "@/components/todo/TodoStats";
 import useTodos from "@/hooks/useTodos";
+import { getDailyNote, saveDailyNote } from "@/utils/storage";
 
 export default function DashboardPage() {
   const {
@@ -16,12 +19,39 @@ export default function DashboardPage() {
     stats,
   } = useTodos();
 
+  const [showTodayOnly, setShowTodayOnly] = useState(false);
+
+  const todayKey = useMemo(
+    () => new Date().toISOString().slice(0, 10),
+    []
+  );
+  const [todayNote, setTodayNote] = useState("");
+
+  useEffect(() => {
+    setTodayNote(getDailyNote(todayKey));
+  }, [todayKey]);
+
   const today = new Date().toLocaleDateString("ko-KR", {
     year: "numeric",
     month: "long",
     day: "numeric",
     weekday: "long",
   });
+
+  const displayTodos = useMemo(
+    () =>
+      showTodayOnly
+        ? filteredTodos.filter(
+            (todo) => todo.createdAt.slice(0, 10) === todayKey
+          )
+        : filteredTodos,
+    [filteredTodos, showTodayOnly, todayKey]
+  );
+
+  const handleChangeTodayNote = (value: string) => {
+    setTodayNote(value);
+    saveDailyNote(todayKey, value);
+  };
 
   return (
     <main className="min-h-screen bg-slate-50 px-4 py-8 sm:px-6">
@@ -48,7 +78,19 @@ export default function DashboardPage() {
           completed={stats.completed}
           active={stats.active}
           progress={stats.progress}
+          todayCompleted={stats.todayCompleted}
+          streak={stats.streak}
         />
+        <section className="rounded-xl border border-slate-200 bg-white p-4 text-xs text-slate-600 shadow-sm">
+          <p className="mb-2 font-medium text-slate-700">오늘 한 줄 기록</p>
+          <input
+            type="text"
+            value={todayNote}
+            onChange={(e) => handleChangeTodayNote(e.target.value)}
+            placeholder="오늘 하루를 한 줄로 남겨보세요."
+            className="w-full rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-xs outline-none transition focus:border-slate-900 focus:ring-1 focus:ring-slate-900/20"
+          />
+        </section>
         <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
           <TodoForm onAddTodo={addTodo} />
         </section>
@@ -58,11 +100,24 @@ export default function DashboardPage() {
             <h2 className="text-base font-semibold text-slate-800">
               할 일 목록
             </h2>
-            <TodoFilter filter={filter} onChangeFilter={setFilter} />
+            <div className="flex items-center gap-3">
+              <TodoFilter filter={filter} onChangeFilter={setFilter} />
+              <button
+                type="button"
+                onClick={() => setShowTodayOnly((prev) => !prev)}
+                className={`rounded-full border px-3 py-1 text-[11px] font-medium transition ${
+                  showTodayOnly
+                    ? "border-slate-900 bg-slate-900 text-slate-50"
+                    : "border-slate-200 bg-white text-slate-600 hover:border-slate-300"
+                }`}
+              >
+                {showTodayOnly ? "오늘만 보기" : "전체 보기"}
+              </button>
+            </div>
           </div>
 
           <TodoList
-            todos={filteredTodos}
+            todos={displayTodos}
             onToggle={toggleTodo}
             onDelete={deleteTodo}
           />
