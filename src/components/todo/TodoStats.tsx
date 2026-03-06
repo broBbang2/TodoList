@@ -19,20 +19,18 @@ export default function TodoStats({
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
       {cards.map((card) => (
         <div
           key={card.label}
-          className={`rounded-2xl border p-5 shadow-sm ${
-            card.label === "진행률"
-              ? "border-blue-200 bg-gradient-to-br from-blue-50 via-sky-50 to-white"
-              : "border-slate-200 bg-white"
-          }`}
+          className="rounded-lg border border-slate-200 bg-white px-3 py-3 text-left text-sm"
         >
-          <p className="text-xs font-medium uppercase tracking-wide text-slate-500">
+          <p className="text-[11px] font-medium tracking-wide text-slate-500">
             {card.label}
           </p>
-          <p className="mt-2 text-2xl font-bold text-slate-800">{card.value}</p>
+          <p className="mt-1 text-xl font-semibold text-slate-900">
+            {card.value}
+          </p>
         </div>
       ))}
     </div>

@@ -28,11 +28,11 @@ export default function TodoForm({ onAddTodo }: TodoFormProps) {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         placeholder="할 일을 입력하세요."
-        className="flex-1 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm sm:text-base outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+        className="flex-1 rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm outline-none transition focus:border-slate-900 focus:ring-1 focus:ring-slate-900/20"
       />
       <button
         type="submit"
-        className="w-full rounded-xl bg-blue-600 px-5 py-3 text-sm sm:text-base font-medium text-white shadow-sm transition hover:bg-blue-700 hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 sm:w-auto"
+        className="w-full rounded-lg bg-slate-900 px-4 py-2.5 text-sm font-medium text-white transition hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-50 sm:w-auto"
       >
         추가
       </button>

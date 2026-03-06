@@ -18,7 +18,7 @@ export default function TodoFilter({
   onChangeFilter,
 }: TodoFilterProps) {
   return (
-    <div className="inline-flex rounded-full bg-slate-100 p-1">
+    <div className="inline-flex rounded-full border border-slate-200 bg-slate-50 p-0.5 text-xs">
       {filters.map((item) => {
         const isActive = filter === item.value;
 
@@ -27,10 +27,10 @@ export default function TodoFilter({
             key={item.value}
             type="button"
             onClick={() => onChangeFilter(item.value)}
-            className={`rounded-full px-4 py-1.5 text-xs sm:text-sm font-medium transition ${
+            className={`rounded-full px-3 py-1 font-medium transition ${
               isActive
-                ? "bg-white text-blue-700 shadow-sm"
-                : "bg-transparent text-slate-600 hover:text-slate-800"
+                ? "bg-slate-900 text-slate-50"
+                : "bg-transparent text-slate-600 hover:text-slate-900"
             }`}
           >
             {item.label}
